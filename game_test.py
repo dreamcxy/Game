@@ -1,8 +1,11 @@
 import pygame
 import random
+import win32api
+import win32con
 from pygame.locals import *
 from sys import exit
 from math import sqrt
+from time import time
 
 window = Rect(0, 0, 600, 800)
 window_width = window.size[0]
@@ -10,8 +13,13 @@ window_height = window.size[1]
 pygame.init()
 screen = pygame.display.set_mode(window.size)
 
+start = time()
+
 Magenta = (255, 0, 255)
 Yellow = (255, 255, 0)
+Coral = (255, 127, 80)
+DeepPink = (255, 20, 147)
+
 ADDENEMY = pygame.USEREVENT + 1
 pygame.time.set_timer(ADDENEMY, 1000)
 CHANGESPEED = pygame.USEREVENT + 2
@@ -27,8 +35,18 @@ class Player(pygame.sprite.Sprite):
         super(Player, self).__init__()
         self.radius = 10
         self.pos = [100, 200]
-        self.circle = pygame.draw.circle(screen, Yellow, self.pos, self.radius, 0)
+        self.circle = pygame.draw.circle(
+            screen, Yellow, self.pos, self.radius, 0)
         pygame.display.flip()
+
+    def grow_bigger(self):
+        self.radius += 5
+
+    def grow_smaller(self):
+        if self.radius > 10:
+            self.radius -= 5
+        else:
+            pass
 
     def get_pos(self):
         return self.pos
@@ -49,7 +67,8 @@ class Player(pygame.sprite.Sprite):
         elif mouse_x > window.size[0] - self.radius:
             mouse_x = window.size[0] - self.radius
         screen.fill((0, 0, 0))
-        self.circle = pygame.draw.circle(screen, Yellow, mouse_pos, self.radius, 0)
+        self.circle = pygame.draw.circle(
+            screen, Yellow, mouse_pos, self.radius, 0)
 
 
 class Enemy1(pygame.sprite.Sprite):
@@ -60,7 +79,8 @@ class Enemy1(pygame.sprite.Sprite):
         self.appear = True
         self.speed = init_speed
         print self.speed
-        self.circle = pygame.draw.circle(screen, Magenta, self.pos, self.radius, 0)
+        self.circle = pygame.draw.circle(
+            screen, Magenta, self.pos, self.radius, 0)
         pygame.display.flip()
 
     def get_pos(self):
@@ -76,10 +96,6 @@ class Enemy1(pygame.sprite.Sprite):
         self.pos[0] += self.speed[0]
         self.pos[1] += self.speed[1]
         pygame.draw.circle(screen, Magenta, self.pos, self.radius, 0)
-
-    def draw(self):
-        pygame.draw.circle(screen, Magenta, self.pos, self.radius, 0)
-        pygame.display.flip()
 
 
 class Enemy2(pygame.sprite.Sprite):
@@ -89,7 +105,8 @@ class Enemy2(pygame.sprite.Sprite):
         self.pos = pos
         self.appear = True
         self.speed = init_speed
-        self.circle = pygame.draw.circle(screen, Magenta, self.pos, self.radius, 0)
+        self.circle = pygame.draw.circle(
+            screen, Magenta, self.pos, self.radius, 0)
         pygame.display.flip()
 
     def get_pos(self):
@@ -106,10 +123,6 @@ class Enemy2(pygame.sprite.Sprite):
         self.pos[1] += self.speed[1]
         pygame.draw.circle(screen, Magenta, self.pos, self.radius, 0)
 
-    def draw(self):
-        pygame.draw.circle(screen, Magenta, self.pos, self.radius, 0)
-        pygame.display.flip()
-
 
 class Enemy3(pygame.sprite.Sprite):
     def __init__(self, pos):
@@ -118,7 +131,8 @@ class Enemy3(pygame.sprite.Sprite):
         self.pos = pos
         self.appear = True
         self.speed = init_speed
-        self.circle = pygame.draw.circle(screen, Magenta, self.pos, self.radius, 0)
+        self.circle = pygame.draw.circle(
+            screen, Magenta, self.pos, self.radius, 0)
         pygame.display.flip()
 
     def get_pos(self):
@@ -135,10 +149,6 @@ class Enemy3(pygame.sprite.Sprite):
         self.pos[1] -= self.speed[1]
         pygame.draw.circle(screen, Magenta, self.pos, self.radius, 0)
 
-    def draw(self):
-        pygame.draw.circle(screen, Magenta, self.pos, self.radius, 0)
-        pygame.display.flip()
-
 
 class Enemy4(pygame.sprite.Sprite):
     def __init__(self, pos):
@@ -147,7 +157,8 @@ class Enemy4(pygame.sprite.Sprite):
         self.pos = pos
         self.appear = True
         self.speed = init_speed
-        self.circle = pygame.draw.circle(screen, Magenta, self.pos, self.radius, 0)
+        self.circle = pygame.draw.circle(
+            screen, Magenta, self.pos, self.radius, 0)
         pygame.display.flip()
 
     def get_pos(self):
@@ -164,40 +175,205 @@ class Enemy4(pygame.sprite.Sprite):
         self.pos[1] -= self.speed[1]
         pygame.draw.circle(screen, Magenta, self.pos, self.radius, 0)
 
-    def draw(self):
-        pygame.draw.circle(screen, Magenta, self.pos, self.radius, 0)
-        pygame.display.flip()
 
-
-class Feature1(pygame.sprite.Sprite):
+class Big1(pygame.sprite.Sprite):
     def __init__(self, pos):
-        super(Feature1, self).__init__()
+        super(Big1, self).__init__()
         self.radius = 10
         self.pos = pos
         self.appear = True
         self.speed = init_speed
-        self.circle = pygame.draw.circle(screen, ())
+        self.circle = pygame.draw.circle(
+            screen, Coral, self.pos, self.radius, 0)
+
+    def disappear(self):
+        self.appear = False
+
+    def get_radius(self):
+        return self.radius
+
+    def get_pos(self):
+        return self.pos
+
+    def auto_move(self):
+        self.pos[0] += self.speed[0]
+        self.pos[1] += self.speed[1]
+        pygame.draw.circle(screen, Coral, self.pos, self.radius, 0)
 
 
-def distance(pos1, pos2):
-    return sqrt(pow((pos1[0] - pos2[0]), 2) + pow((pos1[1] - pos2[1]), 2))
+class Big2(pygame.sprite.Sprite):
+    def __init__(self, pos):
+        super(Big2, self).__init__()
+        self.radius = 10
+        self.pos = pos
+        self.appear = True
+        self.speed = init_speed
+        self.circle = pygame.draw.circle(
+            screen, Coral, self.pos, self.radius, 0)
+
+    def disappear(self):
+        self.appear = False
+
+    def get_radius(self):
+        return self.radius
+
+    def get_pos(self):
+        return self.pos
+
+    def auto_move(self):
+        self.pos[0] -= self.speed[0]
+        self.pos[1] += self.speed[1]
+        pygame.draw.circle(screen, Coral, self.pos, self.radius, 0)
 
 
-def judge_collide(player, enemy):
-    player_pos = player.get_pos()
-    player_radius = player.get_radius()
-    enemy_pos = enemy.get_pos()
-    enemy_raidus = enemy.get_radius()
-    if distance(player_pos, enemy_pos) <= abs(player_radius + enemy_raidus):
-        return True
-    return False
+class Big3(pygame.sprite.Sprite):
+    def __init__(self, pos):
+        super(Big3, self).__init__()
+        self.radius = 10
+        self.pos = pos
+        self.appear = True
+        self.speed = init_speed
+        self.circle = pygame.draw.circle(
+            screen, Coral, self.pos, self.radius, 0)
+
+    def disappear(self):
+        self.appear = False
+
+    def get_radius(self):
+        return self.radius
+
+    def get_pos(self):
+        return self.pos
+
+    def auto_move(self):
+        self.pos[0] -= self.speed[0]
+        self.pos[1] -= self.speed[1]
+        pygame.draw.circle(screen, Coral, self.pos, self.radius, 0)
 
 
-def out_border(enemy):
-    enemy_pos = enemy.get_pos()
-    if enemy_pos[0] > window_width or enemy_pos[1] > window_height:
-        return True
-    return False
+class Big4(pygame.sprite.Sprite):
+    def __init__(self, pos):
+        super(Big4, self).__init__()
+        self.radius = 10
+        self.pos = pos
+        self.appear = True
+        self.speed = init_speed
+        self.circle = pygame.draw.circle(
+            screen, Coral, self.pos, self.radius, 0)
+
+    def disappear(self):
+        self.appear = False
+
+    def get_radius(self):
+        return self.radius
+
+    def get_pos(self):
+        return self.pos
+
+    def auto_move(self):
+        self.pos[0] += self.speed[0]
+        self.pos[1] -= self.speed[1]
+        pygame.draw.circle(screen, Coral, self.pos, self.radius, 0)
+
+
+class Small1(pygame.sprite.Sprite):
+    def __init__(self, pos):
+        super(Small1, self).__init__()
+        self.radius = 10
+        self.pos = pos
+        self.appear = True
+        self.speed = init_speed
+        self.circle = pygame.draw.circle(
+            screen, DeepPink, self.pos, self.radius, 0)
+
+    def disappear(self):
+        self.appear = False
+
+    def get_radius(self):
+        return self.radius
+
+    def get_pos(self):
+        return self.pos
+
+    def auto_move(self):
+        self.pos[0] += self.speed[0]
+        self.pos[1] += self.speed[1]
+        pygame.draw.circle(screen, DeepPink, self.pos, self.radius, 0)
+
+
+class Small2(pygame.sprite.Sprite):
+    def __init__(self, pos):
+        super(Small2, self).__init__()
+        self.radius = 10
+        self.pos = pos
+        self.appear = True
+        self.speed = init_speed
+        self.circle = pygame.draw.circle(
+            screen, DeepPink, self.pos, self.radius, 0)
+
+    def disappear(self):
+        self.appear = False
+
+    def get_radius(self):
+        return self.radius
+
+    def get_pos(self):
+        return self.pos
+
+    def auto_move(self):
+        self.pos[0] -= self.speed[0]
+        self.pos[1] += self.speed[1]
+        pygame.draw.circle(screen, DeepPink, self.pos, self.radius, 0)
+
+
+class Small3(pygame.sprite.Sprite):
+    def __init__(self, pos):
+        super(Small3, self).__init__()
+        self.radius = 10
+        self.pos = pos
+        self.appear = True
+        self.speed = init_speed
+        self.circle = pygame.draw.circle(
+            screen, DeepPink, self.pos, self.radius, 0)
+
+    def disappear(self):
+        self.appear = False
+
+    def get_radius(self):
+        return self.radius
+
+    def get_pos(self):
+        return self.pos
+
+    def auto_move(self):
+        self.pos[0] -= self.speed[0]
+        self.pos[1] -= self.speed[1]
+        pygame.draw.circle(screen, DeepPink, self.pos, self.radius, 0)
+
+
+class Small4(pygame.sprite.Sprite):
+    def __init__(self, pos):
+        super(Small4, self).__init__()
+        self.radius = 10
+        self.pos = pos
+        self.appear = True
+        self.speed = init_speed
+        self.circle = pygame.draw.circle(
+            screen, DeepPink, self.pos, self.radius, 0)
+
+    def disappear(self):
+        self.appear = False
+
+    def get_radius(self):
+        return self.radius
+
+    def get_pos(self):
+        return self.pos
+
+    def auto_move(self):
+        self.pos[0] += self.speed[0]
+        self.pos[1] -= self.speed[1]
+        pygame.draw.circle(screen, DeepPink, self.pos, self.radius, 0)
 
 
 class Switch(object):
@@ -219,8 +395,29 @@ class Switch(object):
             return False
 
 
+def distance(pos1, pos2):
+    return sqrt(pow((pos1[0] - pos2[0]), 2) + pow((pos1[1] - pos2[1]), 2))
+
+
+def judge_collide(player, enemy):
+    player_pos = player.get_pos()
+    player_radius = player.get_radius()
+    enemy_pos = enemy.get_pos()
+    enemy_radius = enemy.get_radius()
+    if distance(player_pos, enemy_pos) <= abs(player_radius + enemy_radius):
+        return True
+    return False
+
+
+def out_border(enemy):
+    enemy_pos = enemy.get_pos()
+    if enemy_pos[0] > window_width or enemy_pos[1] > window_height:
+        return True
+    return False
+
+
 def add_speed():
-    if init_speed[0] <= 9:
+    if init_speed[0] <= 2:
         init_speed[0] += 1
         init_speed[1] += 1
 
@@ -274,13 +471,71 @@ def random_born():
             return False
 
 
+def born_enemy():
+    born_place = random_born()
+    x = born_place[0]
+    y = born_place[1]
+    if x <= window_width / 2 and y <= window_height / 2:
+        new_enemy = Enemy1(born_place)
+    elif x >= window_width / 2 and y <= window_height / 2:
+        new_enemy = Enemy2(born_place)
+    elif x >= window_width / 2 and y >= window_height / 2:
+        new_enemy = Enemy3(born_place)
+    else:
+        new_enemy = Enemy4(born_place)
+    return new_enemy
+
+
+def born_big():
+    born_place = random_born()
+    x = born_place[0]
+    y = born_place[1]
+    if x <= window_width / 2 and y <= window_height / 2:
+        new_big = Big1(born_place)
+    elif x >= window_width / 2 and y <= window_height / 2:
+        new_big = Big2(born_place)
+    elif x >= window_width / 2 and y >= window_height / 2:
+        new_big = Big3(born_place)
+    else:
+        new_big = Big4(born_place)
+    return new_big
+
+
+def born_small():
+    born_place = random_born()
+    x = born_place[0]
+    y = born_place[1]
+    if x <= window_width / 2 and y <= window_height / 2:
+        new_small = Small1(born_place)
+    elif x >= window_width / 2 and y <= window_height / 2:
+        new_small = Small2(born_place)
+    elif x >= window_width / 2 and y >= window_height / 2:
+        new_small = Small3(born_place)
+    else:
+        new_small = Small4(born_place)
+    return new_small
+
+
+def over():
+    stop = time()
+    win32api.MessageBox(0, str(stop - start), "over", win32con.MB_OK)
+
+
 enemies = pygame.sprite.Group()
 player = Player()
+bigs = pygame.sprite.Group()
+smalls = pygame.sprite.Group()
 while True:
+    for big in bigs:
+        if big.appear:
+            big.auto_move()
+    for small in smalls:
+        if small.appear:
+            small.auto_move()
     for enemy in enemies:
         if enemy.appear:
             enemy.auto_move()
-            enemy.draw()
+    pygame.display.update()
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
@@ -290,27 +545,45 @@ while True:
             mouse_pos = mouse_x, mouse_y
         elif event.type == ADDENEMY:
             for i in range(0, born_num):
-                born_place = random_born()
-                x = born_place[0]
-                y = born_place[1]
-                if x <= window_width / 2 and y <= window_height / 2:
-                    new_enemy = Enemy1(born_place)
-                elif x >= window_width / 2 and y <= window_height / 2:
-                    new_enemy = Enemy2(born_place)
-                elif x >= window_width / 2 and y >= window_height / 2:
-                    new_enemy = Enemy3(born_place)
+                random_type = random.random()
+                if 0 <= random_type < 0.8:
+                    new_enemy = born_enemy()
+                    enemies.add(new_enemy)
+                elif 0.8 <= random_type < 0.9:
+                    new_big = born_big()
+                    bigs.add(new_big)
                 else:
-                    new_enemy = Enemy4(born_place)
-                enemies.add(new_enemy)
+                    new_small = born_small()
+                    smalls.add(new_small)
         elif event.type == CHANGESPEED:
             add_speed()
         elif event.type == BORNNUM:
             update_born_num()
+        elif event.type == KEYDOWN:
+            if event.key == K_ESCAPE:
+                pygame.quit()
+                exit()
     player.update(mouse_pos)
     for enemy in enemies:
-        if judge_collide(player, enemy) or out_border(enemy):
-            # print 'col'
+        if judge_collide(player, enemy):
             enemy.disappear()
             enemies.remove(enemy)
-
+            over()
+        if out_border(enemy):
+            enemy.disappear()
+            enemies.remove(enemy)
+    for big in bigs:
+        if judge_collide(player, big):
+            player.grow_bigger()
+            bigs.remove(big)
+        if out_border(big):
+            big.disappear()
+            bigs.remove(big)
+    for small in smalls:
+        if judge_collide(player, small):
+            player.grow_smaller()
+            smalls.remove(small)
+        if out_border(small):
+            small.disappear()
+            smalls.remove(small)
     pygame.display.update()
