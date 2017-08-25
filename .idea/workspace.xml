@@ -2,14 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="57a9e740-1dc1-4fc1-8b0a-5edcae483daf" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dictionaries/dreamcxy.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/Game.iml" afterPath="$PROJECT_DIR$/.idea/Game.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BallCrash/game_board.py" afterPath="$PROJECT_DIR$/BallCrash/game_board.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/game_test.py" afterPath="$PROJECT_DIR$/game_test.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test.py" afterPath="$PROJECT_DIR$/test.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -69,7 +62,7 @@
       <file leaf-file-name="game_board.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/BallCrash/game_board.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="436">
+            <state relative-caret-position="5162">
               <caret line="583" column="28" lean-forward="true" selection-start-line="583" selection-start-column="28" selection-end-line="583" selection-end-column="28" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
@@ -738,7 +731,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/BallCrash/game_board.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="436">
+        <state relative-caret-position="5162">
           <caret line="583" column="28" lean-forward="true" selection-start-line="583" selection-start-column="28" selection-end-line="583" selection-end-column="28" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
